@@ -9,13 +9,28 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0; // Para controlar la pestaña activa del BottomNavBar
-
+  bool _showConnectionStatus = true;
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
   }
+@override
+  void initState() {
+    super.initState();
+    // 2. INICIA EL TEMPORIZADOR
+    // Después de 3 segundos, ocultamos la notificación.
+    Future.delayed(const Duration(seconds: 3), () {
+      // Usamos setState para que la UI se reconstruya con el nuevo valor.
+      if (mounted) { // Buena práctica: comprueba que el widget todavía existe.
+        setState(() {
+          _showConnectionStatus = false;
+        });
+      }
+    });
+  }
 
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,28 +87,24 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 Widget _buildConnectionStatus() {
-  // En un caso real, esta visibilidad dependería del estado de la conexión
-  bool isConnected = true;
-
-  // Semantics para agrupar y describir la notificación
-  return Semantics(
-    label: "Notificación: Conectado con la pulsera",
-    child: isConnected
-        ? Container(
-            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-            decoration: BoxDecoration(
-              color: Colors.black,
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: const Text(
-              'Conectado con pulsera',
-              style: TextStyle(color: Colors.white, fontSize: 16),
-              textAlign: TextAlign.center,
-            ),
-          )
-        // ignore: dead_code
-        : const SizedBox.shrink(), // No muestra nada si no está conectado
-  );
+return AnimatedOpacity(
+      // La opacidad será 1 (visible) o 0 (invisible) según el estado
+      opacity: _showConnectionStatus ? 1.0 : 0.0,
+      // Duración de la animación de fade
+      duration: const Duration(milliseconds: 500),
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+        decoration: BoxDecoration(
+          color: Colors.black,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: const Text(
+          'Conectado con pulsera',
+          style: TextStyle(color: Colors.white, fontSize: 16),
+          textAlign: TextAlign.center,
+        ),
+      ),
+    );
 }
 
 Widget _buildHeader() {

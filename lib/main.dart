@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:via_2/routes_screen/routes_screen.dart';
 import 'home_screen/home_screend.dart';
 
 void main() {
@@ -18,7 +19,7 @@ class MainApp extends StatelessWidget {
         primarySwatch: Colors.green, 
       ),
       // 2. Usa HomeScreen como la pantalla de inicio
-      home: const HomeScreen(), 
+      home: const EmergencyScreen(), 
     );
   }
 }
