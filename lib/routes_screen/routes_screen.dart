@@ -119,7 +119,9 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
     ),
     const SizedBox(width: 15),
     ElevatedButton(
-      onPressed: () {},
+      onPressed: () {
+        Navigator.pushNamed(context, '/analyzing_route');
+      },
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.white,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
